@@ -1,0 +1,4 @@
+aiohttp>=3.11,<4
+qrcode>=8,<9
+Pillow>=11,<13
+psutil>=6,<8

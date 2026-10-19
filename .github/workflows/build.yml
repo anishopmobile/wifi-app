@@ -1,0 +1,55 @@
+name: Test and Windows Installer
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pytest -q
+  installer:
+    needs: tests
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt pyinstaller
+      - name: Build single-folder Windows desktop app
+        shell: pwsh
+        run: |
+          pyinstaller --noconfirm --clean --onedir --windowed --name AniWiFi --add-data "wifi_app/web;wifi_app/web" --collect-all aiohttp main.py
+          if (!(Test-Path 'dist/AniWiFi/AniWiFi.exe')) { throw 'Executable missing' }
+      - name: Create Setup EXE using Inno Setup
+        shell: pwsh
+        run: |
+          $iscc = '${{ github.workspace }}\none'
+          $paths = @('C:\Program Files (x86)\Inno Setup 6\ISCC.exe', 'C:\Program Files\Inno Setup 6\ISCC.exe')
+          $iscc = $paths | Where-Object { Test-Path $_ } | Select-Object -First 1
+          if (!$iscc) { choco install innosetup --yes --no-progress; $iscc = $paths | Where-Object { Test-Path $_ } | Select-Object -First 1 }
+          if (!$iscc) { throw 'Inno Setup not found' }
+          & $iscc installer\AniWiFi.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if (!(Test-Path 'installer-output/AniWiFi-Setup-1.0.0.exe')) { throw 'Installer missing' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AniWiFi-Windows-Installer
+          path: installer-output/*.exe
+          if-no-files-found: error
+          retention-days: 30

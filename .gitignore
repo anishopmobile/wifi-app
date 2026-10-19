@@ -1,0 +1,10 @@
+__pycache__/
+.pytest_cache/
+.venv/
+*.py[cod]
+build/
+dist/
+installer-output/
+*.spec
+*.log
+.DS_Store

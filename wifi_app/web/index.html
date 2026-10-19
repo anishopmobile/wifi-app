@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <title>آنی وای‌فای | ارسال فایل</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <main class="layout">
+    <header class="hero">
+      <div class="badge">ارسال مستقیم در شبکه وای‌فای • بدون اینترنت</div>
+      <h1>آنی وای‌فای</h1>
+      <p>فایل‌ها و عکس‌ها را با سرعت شبکه محلی برای کامپیوتر بفرستید؛ هیچ برنامه‌ای روی گوشی لازم نیست.</p>
+      <div id="session" class="session">در حال اتصال به رایانه...</div>
+    </header>
+    <section class="panel" aria-label="انتخاب فایل">
+      <h2>۱. فایل‌های خود را انتخاب کنید</h2>
+      <p class="hint">می‌توانید چند عکس، فیلم یا فایل را با هم انتخاب کنید. تا پایان ارسال این صفحه را باز نگه دارید.</p>
+      <div class="select-group">
+        <label class="pick primary" for="allFiles">📁 انتخاب فایل‌ها</label>
+        <input id="allFiles" type="file" multiple>
+        <label class="pick secondary" for="photos">🖼️ انتخاب عکس و ویدئو</label>
+        <input id="photos" type="file" accept="image/*,video/*" multiple>
+      </div>
+      <div id="limits" class="hint"></div>
+    </section>
+    <section class="panel" aria-label="فهرست انتقال">
+      <div class="title-row"><h2>۲. وضعیت ارسال</h2><span id="total">۰ فایل</span></div>
+      <div class="actions">
+        <button id="pauseAll" type="button">⏸ توقف همه</button>
+        <button id="resumeAll" type="button">▶ ادامه همه</button>
+        <label class="concurrency">ارسال هم‌زمان <select id="concurrency"><option value="1">۱</option><option value="2">۲</option><option value="3">۳</option><option value="4" selected>۴</option><option value="6">۶</option></select></label>
+      </div>
+      <div class="overall"><div id="overallBar"></div></div>
+      <div id="overallText" class="hint">هنوز فایلی انتخاب نشده است.</div>
+      <div id="jobs" class="jobs"><div class="empty">فایل‌های انتخاب‌شده اینجا نمایش داده می‌شوند.</div></div>
+    </section>
+    <section class="help">
+      <h3>نکات مهم</h3>
+      <p>اگر شبکه قطع شد یا صفحه را بستید، به همین QR برگردید و <strong>همان فایل‌ها را دوباره انتخاب کنید</strong> تا بخش‌های قبلاً دریافت‌شده دوباره ارسال نشوند. با «لغو»، بخش‌های ناقص آن فایل از کامپیوتر حذف می‌شوند.</p>
+      <p>برای فایل‌های حجیم، گوشی را به شارژ بزنید و صفحه مرورگر را باز نگه دارید. در زمان ارسال، نیازی به اینترنت یا مصرف حجم اینترنت ندارید.</p>
+    </section>
+    <footer>آنی شاپ • انتقال امن‌تر در شبکه محلی مورد اعتماد</footer>
+  </main>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
